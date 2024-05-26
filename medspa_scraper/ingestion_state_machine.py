@@ -110,7 +110,7 @@ class IngestionStateMachine(Construct):
         map_locations = sfn.Map(
             self,
             "MapChunkedLocations",
-            max_concurrency=1,
+            max_concurrency=10,
             items_path="$.body",
         )
         map_locations.iterator(
@@ -123,5 +123,5 @@ class IngestionStateMachine(Construct):
             self,
             "MedSpaScraperStateMachine",
             definition=sfn_definition,
-            timeout=Duration.minutes(15),
+            timeout=Duration.minutes(45),
         )

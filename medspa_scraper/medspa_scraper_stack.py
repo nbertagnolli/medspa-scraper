@@ -22,6 +22,7 @@ from aws_cdk import (
     aws_events_targets as targets,
     aws_secretsmanager as secretsmanager,
     aws_logs as logs,
+    aws_iam as iam,
 )
 from .ingestion_state_machine import IngestionStateMachine
 
@@ -100,4 +101,6 @@ class MedspaScraperStack(Stack):
                 hour="11",  # 3:00 AM PST is 11:00 AM UTC (depending on daylight saving time)
             ),
         )
-        rule.add_target(targets.LambdaFunction(self.state_machine.scrape_medspa_fn))
+
+        rule.add_target(targets.SfnStateMachine(self.state_machine.state_machine))
+        # rule.add_target(targets.LambdaFunction(self.state_machine.scrape_medspa_fn))
